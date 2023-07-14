@@ -1,38 +1,36 @@
-import { useState } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
-import NavBar from "./components/UI/Navbar/Navbar";
-import Posts from './components/Posts/Posts'
-import AuthModel from './components/Authantication/AuthModel'
-import LandingSection from "./components/LandingSection/LandingSection";
+import Root from "./pages/Root";
+import HomePage from "./pages/HomePage";
+import UsersPage from "./pages/UsersPage";
+import ErrorPage from "./pages/ErrorPage";
+import UserInfoPage from "./pages/UserInfoPage";
+import fetchUserData from "./store/circle-action";
 
 function App() {
-  const [displayModel, setDisplayModel] = useState(false)
-  const [signIn, setSignIn] = useState(true)
-  const [joinGroup, setJoinGroup] = useState(false)
+  const router = createBrowserRouter([
+    {
+      path: '/circle',
+      element: <Root />,
+      children: [
+        { path: '/circle/', element: <HomePage />},
+        { path: '/circle/users', element: <UsersPage />},
+        { path: '/circle/users/:id', element: <UserInfoPage /> },
+      ]
+    },
+    { path: '*', element: <ErrorPage /> }
+  ])
 
-  const handleGroupJoin = () => {
-    setJoinGroup(joinGroup => !joinGroup)
-  }
+  const dispatch = useDispatch()
 
-  const handleDisplayModel = () => {
-    setDisplayModel(model => !model)
-  }
-
-  const cancelHandler = () => {
-    setDisplayModel(false)
-  }
-
-  const handleSignUp = () => {
-    setSignIn(signIn => !signIn)
-  }
-
+  useEffect(() => {
+    dispatch(fetchUserData())
+  },[dispatch])
+  
   return (
-    <div className="App">
-      <NavBar onClick={handleDisplayModel} />
-      <LandingSection joinGroup={joinGroup} onJoinGroup={handleGroupJoin} />
-      <Posts joinGroup={joinGroup} onJoinGroup={handleGroupJoin} />
-      {displayModel && <AuthModel onCancel={cancelHandler} signUp={handleSignUp} signIn={signIn} />}
-    </div>
+    <RouterProvider router={router} />
   );
 }
 
