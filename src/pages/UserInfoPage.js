@@ -29,7 +29,7 @@ const UserInfoPage = () => {
     <div className="flex justify-center items-center ">
       <div className="grid grid-cols-1 gap-4 relative h-[90vh] my-2 px-6 py-5 place-items-center w-100">
         <div
-          className="w-72 h-72 flex justify-center items-center p-4 rounded-3xl"
+          className="w-96 h-96 flex justify-center items-center p-4 rounded-3xl"
           style={{ backgroundColor: circleData[id - 1]?.color }}
         >
           <div className="grid place-items-center">
